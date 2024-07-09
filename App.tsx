@@ -4,10 +4,15 @@ import ButtonComponent from './components/ButtonComponent';
 import InputComponent from './components/InputComponent';
 import Login from './screens/Login/Login';
 import Success from './screens/Success';
+import {NavigationContainer} from '@react-navigation/native';
+import AppNavigator from './routes/AppNavigator';
 
 const App = () => {
   return (
     <View>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
       <SafeAreaView style={styles.container}>
         <Login />
         {/* <Success /> */}
