@@ -9,22 +9,22 @@ import {
 } from 'react-native';
 import React from 'react';
 interface ButtonProps {
-  //   onPress: (event: GestureResponderEvent) => void;
+  onPress: (event: GestureResponderEvent) => void;
   title: string;
-  //   style?: ViewStyle;
-  //   textStyle?: TextStyle;
+  style?: ViewStyle;
+  textStyle?: TextStyle;
 }
 
 const ButtonComponent: React.FC<ButtonProps> = ({
-  //   onPress,
+  onPress,
   title,
-  //   style,
-  //   textStyle,
+  style,
+  textStyle,
 }) => {
   return (
     <View>
-      <TouchableOpacity style={[styles.button]}>
-        <Text style={[styles.text]}>{title}</Text>
+      <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+        <Text style={[styles.text, textStyle]}>{title}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,5 +43,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 600,
+    fontFamily: 'Poppins-Medium',
   },
 });

@@ -1,10 +1,40 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {Alert, Image, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
 import LoginImage from '../../assets/LoginImage.jpeg';
 import InputComponent from '../../components/InputComponent';
 import ButtonComponent from '../../components/ButtonComponent';
+import {useNavigation} from '@react-navigation/native';
 
 const Login = () => {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const handleLogin = () => {
+    // Clear previous errors
+    setEmailError('');
+    setPasswordError('');
+
+    // Validate inputs
+    if (email === '') {
+      setEmailError('Email Address is required');
+    } else if (password === '') {
+      setPasswordError('Password is required');
+    }
+    // use static credentials
+    if (email === 'abc@gmail.com' && password === 'abc@123') {
+      navigation.navigate('HomeTabs');
+    } else if (email !== '' && password !== '') {
+      Alert.alert(
+        'Invalid credentials',
+        'Please check your email and password',
+      );
+      setEmail('');
+      setPassword('');
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.image_container}>
@@ -21,12 +51,22 @@ const Login = () => {
       </View>
       <View>
         <Text style={styles.email_text}>Email Address</Text>
-        <InputComponent />
+        <InputComponent value={email} onChangeText={setEmail} />
+        {emailError ? (
+          <Text style={styles.error_text}>{emailError}</Text>
+        ) : null}
         <Text style={styles.email_text}>Password</Text>
-        <InputComponent secureTextEntry />
+        <InputComponent
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        {passwordError ? (
+          <Text style={styles.error_text}>{passwordError}</Text>
+        ) : null}
       </View>
       <View style={styles.btn_container}>
-        <ButtonComponent title="Login" />
+        <ButtonComponent title="Login" onPress={handleLogin} />
       </View>
     </View>
   );
@@ -35,7 +75,7 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {padding: 20},
   image_container: {
     // width: '10%',
     // height: '100%',
@@ -63,5 +103,11 @@ const styles = StyleSheet.create({
   },
   btn_container: {
     marginTop: 50,
+  },
+  error_text: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    color: 'red',
+    marginTop: 5,
   },
 });

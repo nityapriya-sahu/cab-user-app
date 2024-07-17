@@ -13,13 +13,13 @@ interface InputProps extends TextInputProps {
   style?: ViewStyle;
 }
 
-const InputComponent: React.FC<InputProps> = (
+const InputComponent: React.FC<InputProps> = ({
   value,
   onChangeText,
   placeholder,
   secureTextEntry,
   style,
-) => {
+}) => {
   const [isPasswordVisible, setPasswordVisible] = useState(secureTextEntry);
 
   const togglePasswordVisibility = () => {
@@ -28,7 +28,7 @@ const InputComponent: React.FC<InputProps> = (
   return (
     <View>
       <TextInput
-        style={styles.input}
+        style={[styles.input, secureTextEntry ? styles.inputWithIcon : null]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
@@ -61,7 +61,32 @@ const styles = StyleSheet.create({
     // padding: 10,
     marginVertical: 10,
   },
-  icon: {
-    marginLeft: 10,
+  inputWithIcon: {
+    // paddingRight: 40, // Adjust padding to make space for the icon
   },
+  icon: {
+    // marginLeft: 10,
+    position: 'absolute',
+    right: 15,
+    top: 25,
+  },
+
+  // container: {
+  //   position: 'relative',
+  // },
+  // input: {
+  //   borderColor: '#CCC',
+  //   borderWidth: 1,
+  //   borderRadius: 10,
+  //   padding: 10,
+  //   marginVertical: 10,
+  // },
+  // inputWithIcon: {
+  //   paddingRight: 40, // Adjust padding to make space for the icon
+  // },
+  // icon: {
+  //   position: 'absolute',
+  //   right: 15,
+  //   top: 15,
+  // },
 });
