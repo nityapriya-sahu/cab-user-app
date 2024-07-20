@@ -7,6 +7,8 @@ import Success from './screens/Success';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './routes/AppNavigator';
 import Home from './screens/HomeScreen/Home';
+import LoadingScreen from './screens/LoadingScreen';
+import ConfirmScreen from './screens/ConfirmScreen';
 
 const App = () => {
   return (
@@ -16,6 +18,7 @@ const App = () => {
         <AppNavigator />
       </View>
     </NavigationContainer>
+    // <ConfirmScreen />
   );
 };
 
