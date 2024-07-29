@@ -9,6 +9,7 @@ import AppNavigator from './routes/AppNavigator';
 import Home from './screens/HomeScreen/Home';
 import LoadingScreen from './screens/LoadingScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
+import BookedScreen from './screens/BookedScreen';
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
         <AppNavigator />
       </View>
     </NavigationContainer>
-    // <ConfirmScreen />
+    // <BookedScreen />
   );
 };
 

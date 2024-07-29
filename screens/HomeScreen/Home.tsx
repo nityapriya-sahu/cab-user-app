@@ -7,6 +7,7 @@ import DropdownComponent from '../../components/DropdownComponent';
 import GetLocation from 'react-native-get-location';
 import LoadingScreen from '../LoadingScreen';
 import ConfirmScreen from '../ConfirmScreen';
+import {useNavigation} from '@react-navigation/native';
 
 const locations = [
   {key: '1', value: 'Location A', latitude: 21.5465556, longitude: 84.8764722},
@@ -15,6 +16,7 @@ const locations = [
 ];
 
 const Home = () => {
+  const navigation = useNavigation();
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [userLocation, setUserLocation] = useState(null);
@@ -57,6 +59,7 @@ const Home = () => {
 
       setTimeout(() => {
         setConfirmVisible(false);
+        navigation.navigate('Booked');
       }, 2000);
     }, 2000);
   };
