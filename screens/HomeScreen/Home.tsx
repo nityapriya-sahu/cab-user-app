@@ -2,60 +2,69 @@ import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import InputComponent from '../../components/InputComponent';
 import ButtonComponent from '../../components/ButtonComponent';
+import DropdownComponent from '../../components/DropdownComponent';
 import GetLocation from 'react-native-get-location';
-import axios from 'axios';
-import {apiKey} from '../../utils/ApiKey';
+import LoadingScreen from '../LoadingScreen';
+import ConfirmScreen from '../ConfirmScreen';
+
+const locations = [
+  {key: '1', value: 'Location A', latitude: 21.5465556, longitude: 84.8764722},
+  {key: '2', value: 'Location B', latitude: 21.55, longitude: 84.88},
+  {key: '3', value: 'Location C', latitude: 21.56, longitude: 84.89},
+];
 
 const Home = () => {
-  const mapRef = useRef();
-  const [userLocation, setUserLocation] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-  });
-  // console.log(userLocation, 'MMMMMMMMM');
-  const [origin, setOrigin] = useState(null);
+  const [origin, setOrigin] = useState('');
+  const [destination, setDestination] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
+  const mapRef = useRef(null);
+  const [loading, setLoading] = useState(false); // State to manage modal visibility
+  const [confirmVisible, setConfirmVisible] = useState(false);
 
   useEffect(() => {
     const getLocation = () => {
-      GetLocation.getCurrentPosition({
-        enableHighAccuracy: false,
-        timeout: 5000,
-        maximumAge: 10000,
-      })
-        .then(async location => {
-          setUserLocation({
-            latitude: location.latitude,
-            longitude: location.longitude,
-          });
-          if (mapRef) {
-            mapRef.current.animateToRegion({
-              latitude: location.latitude,
-              longitude: location.longitude,
-              latitudeDelta: 0.05,
-              longitudeDelta: 0.05,
-            });
-          }
-          // console.log(location.latitude, location.longitude, '...Location');
-          const {data} = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${apiKey}`,
-          );
-          setOrigin(data.results[0].formatted_address);
-        })
-        .catch(error => {
-          const {code, message} = error;
-          console.warn(code, message);
-        });
+      GetLocation.getCurrentPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          setUserLocation({latitude, longitude});
+        },
+        error => console.log(error),
+        {enableHighAccuracy: true, timeout: 5000, maximumAge: 1000},
+      );
     };
     getLocation();
   }, []);
 
   const handleFindDriver = () => {
-    console.warn('DRIVER FIND');
+    // console.warn('DDDDDDD');
+    setLoading(true);
+
+    const originLocation = locations.find(loc => loc.value === origin);
+    const destinationLocation = locations.find(
+      loc => loc.value === destination,
+    );
+
+    if (originLocation && destinationLocation) {
+      mapRef.current.fitToCoordinates([originLocation, destinationLocation], {
+        edgePadding: {top: 50, right: 50, bottom: 50, left: 50},
+        animated: true,
+      });
+    }
+    setTimeout(() => {
+      setLoading(false);
+      setConfirmVisible(true);
+
+      setTimeout(() => {
+        setConfirmVisible(false);
+      }, 2000);
+    }, 2000);
   };
+
   return (
     <View style={styles.main_container}>
+      <LoadingScreen visible={loading} />
+      <ConfirmScreen visible={confirmVisible} />
       <View style={styles.navbar_container}>
         <View style={styles.home_navbar_text}>
           <Text style={styles.home_navbar_greet}>Welcome back</Text>
@@ -63,52 +72,59 @@ const Home = () => {
         </View>
         <View style={styles.home_navbar_icons}>
           <Ionicons name="notifications" size={30} color="black" />
-          {/* <Ionicons name="notifications" size={30} color="black" /> */}
         </View>
       </View>
       <View style={styles.map_container}>
         <MapView
           ref={mapRef}
           style={{flex: 1}}
-          provider={PROVIDER_GOOGLE} //this line will show the map both android & ios
+          provider={PROVIDER_GOOGLE}
           showsUserLocation={false}
           showsMyLocationButton
           initialRegion={{
-            latitude: userLocation ? userLocation?.latitude : 21.5465556,
-            longitude: userLocation ? userLocation?.longitude : 84.8764722,
+            latitude: userLocation ? userLocation.latitude : 21.5465556,
+            longitude: userLocation ? userLocation.longitude : 84.8764722,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-          <Marker
-            coordinate={{
-              latitude: userLocation?.latitude,
-              longitude: userLocation?.longitude,
-            }}
-          />
+          {userLocation && (
+            <Marker
+              coordinate={{
+                latitude: userLocation.latitude,
+                longitude: userLocation.longitude,
+              }}
+            />
+          )}
         </MapView>
       </View>
       <View style={styles.input_container}>
-        {/* <ScrollView> */}
-        <View>
-          <Text style={styles.input_text}>From Location</Text>
-          <InputComponent value={origin} />
-          <Text style={styles.input_text}>To Location</Text>
-          <InputComponent />
-        </View>
-        <View style={styles.btn_container}>
-          <ButtonComponent
-            title="Find Driver"
-            style={styles.button}
-            onPress={handleFindDriver}
-          />
-        </View>
-        {/* </ScrollView> */}
+        <ScrollView>
+          <View>
+            <Text style={styles.input_text}>From Location</Text>
+            <DropdownComponent
+              data={locations}
+              placeholder="Select From Location"
+              onSelect={setOrigin}
+            />
+            <Text style={styles.input_text}>To Location</Text>
+            <DropdownComponent
+              data={locations}
+              placeholder="Select To Location"
+              onSelect={setDestination}
+            />
+          </View>
+          <View style={styles.btn_container}>
+            <ButtonComponent
+              title="Find Driver"
+              style={styles.button}
+              onPress={handleFindDriver}
+            />
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
 };
-
-export default Home;
 
 const styles = StyleSheet.create({
   main_container: {
@@ -136,19 +152,13 @@ const styles = StyleSheet.create({
   home_navbar_icons: {
     flexDirection: 'row',
   },
-
-  //===========
   map_container: {
     flex: 0.5,
   },
-  //=========
   input_container: {
     flex: 0.4,
-    // backgroundColor: '#e3e3e3',
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
-    // elevation: 10,
-    // shadowColor: 'red',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
@@ -162,7 +172,7 @@ const styles = StyleSheet.create({
   btn_container: {
     marginTop: 10,
   },
-  button: {
-    // backgroundColor: 'yellow',
-  },
+  button: {},
 });
+
+export default Home;
