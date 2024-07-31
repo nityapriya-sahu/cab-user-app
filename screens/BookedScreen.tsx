@@ -6,17 +6,52 @@ import Destination from '../assets/destination.png';
 import RightCar from '../assets/right_car.png';
 import ButtonComponent from '../components/ButtonComponent';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
+import CancelBookModal from './CancelBookModal';
+import CancelConfirmedModal from './CancelConfirmedModal';
 
 const BookedScreen = () => {
+  const navigation = useNavigation();
   const [showSecondView, setShowSecondView] = useState(true);
+  const [showCancelBookModal, setShowCancelBookModal] = useState(false);
+  const [showConfirmedModal, setShowConfirmedModal] = useState(false);
+
+  //this useEffect when book confirmed by driver
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     setShowSecondView(false);
   //   }, 5000);
   //   return () => clearTimeout(timer);
   // }, []);
+  useEffect(() => {
+    if (showConfirmedModal) {
+      const timer = setTimeout(() => {
+        setShowConfirmedModal(false);
+        navigation.navigate('HomeMain');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showConfirmedModal, navigation]);
+
+  const handleCancelRide = () => {
+    setShowCancelBookModal(true);
+  };
+  const onPressCancel = () => {
+    setShowCancelBookModal(false);
+  };
+  const onPressConfirm = () => {
+    setShowCancelBookModal(false);
+    setShowConfirmedModal(true);
+  };
   return (
     <View style={styles.main_container}>
+      <CancelBookModal
+        visible={showCancelBookModal}
+        onCancel={onPressCancel}
+        onConfirm={onPressConfirm}
+      />
+      <CancelConfirmedModal visible={showConfirmedModal} />
+
       <View style={styles.header_container}>
         <Image source={PSIcon} style={{height: 35, width: 35}} />
         <Text style={styles.header_text}>Devid Pilot</Text>
@@ -57,8 +92,8 @@ const BookedScreen = () => {
           </View>
           <View style={styles.button_container}>
             <ButtonComponent
-              title="Cancel"
-              onPress={() => console.warn('Cancel')}
+              title="Cancel Ride"
+              onPress={handleCancelRide}
               style={styles.cancel_btn}
               textStyle={{color: '#065299'}}
             />
