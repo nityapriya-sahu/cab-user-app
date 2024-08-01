@@ -9,6 +9,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import History from '../screens/HistoryScreen';
 import Profile from '../screens/ProfileScreen';
 import BookedScreen from '../screens/BookedScreen';
+import FeedbackScreen from '../screens/FeedbackScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ const HomeNavigator = () => (
   <HomeStack.Navigator screenOptions={{headerShown: false}}>
     <HomeStack.Screen name="HomeMain" component={Home} />
     <HomeStack.Screen name="Booked" component={BookedScreen} />
+    <HomeStack.Screen name="Feedback" component={FeedbackScreen} />
   </HomeStack.Navigator>
 );
 
@@ -61,6 +63,7 @@ const AppNavigator = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="HomeTabs" component={HomeTabs} />
       <Stack.Screen name="Booked" component={BookedScreen} />
+      <Stack.Screen name="Feedback" component={FeedbackScreen} />
     </Stack.Navigator>
   );
 };

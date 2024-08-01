@@ -10,6 +10,7 @@ import Home from './screens/HomeScreen/Home';
 import LoadingScreen from './screens/LoadingScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
 import BookedScreen from './screens/BookedScreen';
+import FeedbackScreen from './screens/FeedbackScreen';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       </View>
     </NavigationContainer>
     // <BookedScreen />
+    // <FeedbackScreen />
   );
 };
 

@@ -28,7 +28,11 @@ const InputComponent: React.FC<InputProps> = ({
   return (
     <View>
       <TextInput
-        style={[styles.input, secureTextEntry ? styles.inputWithIcon : null]}
+        style={[
+          styles.input,
+          secureTextEntry ? styles.inputWithIcon : null,
+          style,
+        ]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
