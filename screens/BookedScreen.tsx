@@ -99,7 +99,7 @@ const BookedScreen = () => {
             />
             <ButtonComponent
               title={<MaterialIcons name="phone" size={30} color="white" />}
-              onPress={() => console.warn('Confirm')}
+              onPress={() => navigation.navigate('Feedback')}
               style={styles.confirm_btn}
               //   textStyle={{color: '#065299'}}
             />
