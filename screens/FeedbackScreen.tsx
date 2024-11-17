@@ -55,6 +55,7 @@ const FeedbackScreen = () => {
               multiline
               numberOfLines={4}
               maxLength={400}
+              style={styles.text_input}
               // onChangeText={text => onChangeText(text)}
               // value={value}
               //   style={{padding: 10}}
@@ -124,5 +125,8 @@ const styles = StyleSheet.create({
     borderColor: '#EEEEEE',
     borderWidth: 5,
     borderRadius: 10,
+  },
+  text_input: {
+    color: '#000000',
   },
 });

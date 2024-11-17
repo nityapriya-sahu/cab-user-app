@@ -24,7 +24,7 @@ const Login = () => {
       setPasswordError('Password is required');
     }
     // use static credentials
-    if (email === 'abc@gmail.com' && password === 'abc@123') {
+    if (email === 'donald@gmail.com' && password === 'donald@123') {
       navigation.navigate('HomeTabs');
     } else if (email !== '' && password !== '') {
       Alert.alert(

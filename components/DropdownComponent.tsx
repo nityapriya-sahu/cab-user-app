@@ -12,6 +12,8 @@ const DropdownComponent = ({data, placeholder, onSelect}) => {
         setSelected={setSelected}
         placeholder={placeholder}
         onSelect={() => onSelect(selected)}
+        inputStyles={styles.input_placeholder}
+        dropdownTextStyles={styles.dropdown_text}
       />
     </View>
   );
@@ -20,6 +22,12 @@ const DropdownComponent = ({data, placeholder, onSelect}) => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
+  },
+  input_placeholder: {
+    color: '#000000',
+  },
+  dropdown_text: {
+    color: '#000000',
   },
 });
 
