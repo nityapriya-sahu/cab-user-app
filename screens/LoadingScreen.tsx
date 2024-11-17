@@ -63,5 +63,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     width: 250,
     textAlign: 'center',
+    color: '#000000',
   },
 });

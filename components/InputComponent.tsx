@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10,
     // padding: 10,
     marginVertical: 10,
+    color: '#000000',
   },
   inputWithIcon: {
     // paddingRight: 40, // Adjust padding to make space for the icon

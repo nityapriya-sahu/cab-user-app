@@ -80,5 +80,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     width: 250,
     textAlign: 'center',
+    color: 'black',
   },
 });
